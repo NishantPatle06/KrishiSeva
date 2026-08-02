@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-en="E-Vikas System — Directorate of Farmer Welfare & Agricultural Development" data-hi="ई-विकास प्रणाली — किसान कल्याण एवं कृषि विकास संचालनालय">E-Vikas System — Directorate of Farmer Welfare & Agricultural Development</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Background Gradient Layer -->
+  <div class="bg-gradient-layer"></div>
+
+  <!-- Government Bilingual Header -->
+  <header>
+    <div class="header-container">
+      <div class="header-logo-section">
+        <span class="logo-emblem">🇮🇳</span>
+        <div class="logo-text">
+          <h2 data-en="E-Vikas System" data-hi="ई-विकास प्रणाली">E-Vikas System <span data-en="(Directorate of MP Krishi)" data-hi="(एमपी कृषि संचालनालय)">(Directorate of MP Krishi)</span></h2>
+          <h3 data-en="Agricultural Fertilizer & Certified Seed Distribution Solution" data-hi="कृषि उर्वरक एवं प्रमाणित बीज वितरण समाधान">Agricultural Fertilizer & Certified Seed Distribution Solution</h3>
+          <h6 data-en="Department of Farmer Welfare & Agricultural Development, Government of MP" data-hi="किसान कल्याण एवं कृषि विकास विभाग, मध्य प्रदेश सरकार">Department of Farmer Welfare & Agricultural Development, Government of MP</h6>
+        </div>
+      </div>
+      <div class="header-right" style="text-align: right; font-size: 0.85rem; line-height: 1.4; display: flex; flex-direction: column; justify-content: center;">
+        <strong style="color: var(--primary-accent); display: block; margin-bottom: 2px;" data-en="📞 CONTACT US / HELPLINE" data-hi="📞 संपर्क करें / हेल्पलाइन">📞 CONTACT US / HELPLINE</strong>
+        <span style="color: #fff; display: block;"><span data-en="Toll-Free: " data-hi="टोल-फ्री: ">Toll-Free: </span><strong>1800-180-1551</strong></span>
+        <span style="color: #9ca3af; display: block; font-size: 0.75rem;"><span data-en="Support: " data-hi="सहायता: ">Support: </span>0755-2558300 (10 AM - 5 PM)</span>
+        <button id="btn-toggle-lang" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; cursor: pointer; margin-top: 5px; display: inline-flex; align-items: center; gap: 4px; align-self: flex-end;">🌐 English / हिन्दी</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Scrolling Notification Marquee Banner -->
+  <div class="marquee-banner">
+    <div class="marquee-badge" data-en="LATEST NOTICE" data-hi="नवीनतम सूचना">LATEST NOTICE</div>
+    <div class="marquee-wrapper">
+      <div class="marquee-content" data-en="📢 Fertilizer & Certified Seed bookings for Kharif Season 2026-27 are now active. • Inventory data is updated daily at 10:00 AM. • E-Token booking portal is active 24x7." data-hi="📢 खरीफ सीजन 2026-27 के लिए उर्वरक और प्रमाणित बीज की बुकिंग सक्रिय है। • इन्वेंटरी डेटा रोजाना सुबह 10:00 बजे अपडेट किया जाता है। • ई-टोकन बुकिंग पोर्टल 24x7 सक्रिय है।">
+        📢 Fertilizer & Certified Seed bookings for Kharif Season 2026-27 are now active. • Inventory data is updated daily at 10:00 AM. • E-Token booking portal is active 24x7.
+      </div>
+    </div>
+  </div>
+
+  <!-- WIZARD STEP HEADER -->
+  <div class="container hidden" id="wizard-steps-header">
+    <div class="steps-progress-bar">
+      <div class="step-progress-indicator" id="step-progress-indicator" style="width: 0%"></div>
+      <div class="step-node active" id="step-node-1">
+        <span class="node-num">1</span>
+        <span class="node-label" data-en="Select Land" data-hi="भूमि चयन">Select Land</span>
+      </div>
+      <div class="step-node" id="step-node-2">
+        <span class="node-num">2</span>
+        <span class="node-label" data-en="Select Supplies" data-hi="सामग्री चयन">Select Supplies</span>
+      </div>
+      <div class="step-node" id="step-node-3">
+        <span class="node-num">3</span>
+        <span class="node-label" data-en="Make Payment" data-hi="भुगतान करें">Make Payment</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 1: PORTAL LOGIN STAGE -->
+  <div class="container login-wrapper" id="login-section">
+    
+    <!-- Hero Intro -->
+    <div class="portal-intro-section">
+      <h1 data-en="Ensuring Timely and Transparent Supply of Fertilizers & Seeds to Every Farmer" data-hi="हर किसान को समय पर और पारदर्शी उर्वरक एवं बीज की आपूर्ति सुनिश्चित करना">Ensuring Timely and Transparent Supply of Fertilizers & Seeds to Every Farmer</h1>
+      <p data-en="Farmers can book allocations dynamically based on registered land records and crop patterns." data-hi="कृषक अपने पंजीकृत भूमि रिकॉर्ड और फसल चक्र के आधार पर सब्सिडी वाली सामग्री बुक कर सकते हैं।">Farmers can book allocations dynamically based on registered land records and crop patterns.</p>
+      
+      <!-- Generated Visual Gallery -->
+      <div class="home-showcase-gallery" style="display: flex; gap: 20px; justify-content: center; margin: 24px 0; flex-wrap: wrap;">
+        <img src="fertilizer_bag.png" alt="NPK Fertilizer Bag" style="width: 280px; height: 200px; object-fit: cover; border-radius: 12px; border: 2px solid var(--border-color); box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+        <img src="farmer_field.png" alt="Indian Farmer in Agricultural Field" style="width: 280px; height: 200px; object-fit: cover; border-radius: 12px; border: 2px solid var(--border-color); box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+      </div>
+    </div>
+
+    <!-- Farmer Classification Grid -->
+    <div class="categories-container">
+      <h3 data-en="Please Select Farmer Category" data-hi="कृपया कृषक वर्ग का चयन करें">Please Select Farmer Category</h3>
+      <div class="categories-grid">
+        <div class="category-card" onclick="selectFarmerCategory('regular')">
+          <div class="cat-icon">🚜</div>
+          <h4 data-en="Regular Farmer (Kisan)" data-hi="नियमित कृषक (किसान)">Regular Farmer (Kisan)</h4>
+          <p data-en="E-Token Generation & Booking" data-hi="ई-टोकन जनरेशन एवं बुकिंग">E-Token Generation & Booking</p>
+        </div>
+        <div class="category-card" onclick="selectFarmerCategory('forest')">
+          <div class="cat-icon">🌲</div>
+          <h4 data-en="Forest Lands (Patta)" data-hi="वन अधिकार पट्टा धारक">Forest Lands (Patta)</h4>
+          <p data-en="Forest Rights Certificate Holders" data-hi="वन अधिकार प्रमाण पत्र धारक">Forest Rights Certificate Holders</p>
+        </div>
+        <div class="category-card" onclick="selectFarmerCategory('disabled')">
+          <div class="cat-icon">👴</div>
+          <h4 data-en="Elderly / Disabled" data-hi="वृद्ध / दिव्यांग कृषक">Elderly / Disabled</h4>
+          <p data-en="Nominate Authorized Representative" data-hi="अधिकृत प्रतिनिधि मनोनीत करें">Nominate Authorized Representative</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Auth Panel -->
+    <div class="card login-card hidden" id="auth-panel-card">
+      <div class="login-header">
+        <span class="back-btn" onclick="backToCategories()" data-en="&larr; Change Category" data-hi="&larr; वर्ग बदलें">&larr; Change Category</span>
+        <h2 id="auth-title" data-en="Farmer Login" data-hi="किसान लॉगिन">Farmer Login</h2>
+        <p data-en="Enter mobile number to request OTP code" data-hi="ओटीपी कोड के लिए मोबाइल नंबर दर्ज करें">Enter mobile number to request OTP code</p>
+      </div>
+      <div class="form-group">
+        <label for="phone-input" data-en="Registered Mobile Number" data-hi="पंजीकृत मोबाइल नंबर">Registered Mobile Number</label>
+        <input type="text" id="phone-input" placeholder="e.g. 9876543210" value="9876543210">
+      </div>
+      <div class="form-group otp-group hidden" id="otp-container">
+        <label for="otp-input" data-en="Enter 6-Digit OTP" data-hi="6-अंकीय ओटीपी दर्ज करें">Enter 6-Digit OTP</label>
+        <input type="text" id="otp-input" placeholder="Enter OTP code">
+        <span class="info-note" id="otp-hint"></span>
+      </div>
+      <button class="btn btn-success w-100" id="btn-login-action" data-en="Request OTP" data-hi="ओटीपी अनुरोध करें">Request OTP</button>
+      <p class="login-helper"><span data-en="Demo phone numbers: " data-hi="डेमो मोबाइल नंबर: ">Demo phone numbers: </span><strong>9876543210</strong> (Rajesh Kumar) or <strong>9876543211</strong> (Savitri Devi).</p>
+    </div>
+
+  </div>
+
+  <!-- STEP 2: LAND RECORDS SELECTION VIEW -->
+  <div class="container hidden" id="land-selection-section">
+    <div class="card farmer-details-card">
+      <div class="farmer-details-header">
+        <div>
+          <h2 id="land-farmer-name">Rajesh Kumar</h2>
+          <p id="land-farmer-father">Father's Name: Late Ram Swaroop Kumar</p>
+          <p id="land-farmer-aadhaar">Aadhaar: —</p>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="logoutFarmer()" data-en="Logout" data-hi="लॉगआउट">Logout</button>
+      </div>
+    </div>
+
+    <div class="card table-card">
+      <h3 data-en="Select Land Khasra Records" data-hi="भूमि खसरा रिकॉर्ड का चयन करें">Select Land Khasra Records</h3>
+      <p class="section-desc" data-en="Choose the land records to calculate allowed seed and fertilizer quotas." data-hi="बीज और उर्वरक कोटा की गणना के लिए संबंधित खसरा रिकॉर्ड चुनें।">Choose the land records to calculate allowed seed and fertilizer quotas.</p>
+      
+      <div class="table-responsive">
+        <table class="gov-table">
+          <thead>
+            <tr>
+              <th width="80px" data-en="Select" data-hi="चयन">Select</th>
+              <th data-en="Khasra / Land No." data-hi="खसरा / भूमि संख्या">Khasra / Land No.</th>
+              <th data-en="Land Registry Address" data-hi="पंजीकृत भूमि का पता">Land Registry Address</th>
+              <th width="150px" style="text-align: right;" data-en="Size (Acres)" data-hi="रकबा (एकड़)">Size (Acres)</th>
+            </tr>
+          </thead>
+          <tbody id="land-table-body">
+            <!-- Populated dynamically -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="step-action-row" style="margin-top: 24px; display: flex; justify-content: space-between; align-items: center;">
+        <div class="selected-summary">
+          <span data-en="Total Selected Land: " data-hi="कुल चयनित रकबा: ">Total Selected Land: </span><span class="highlight-val" id="selected-land-acres">0.0</span> <span data-en="Acres" data-hi="एकड़">Acres</span>
+        </div>
+        <button class="btn btn-primary" id="btn-proceed-to-supplies" data-en="Proceed to Select Supplies &rarr;" data-hi="सामग्री चयन के लिए आगे बढ़ें &rarr;">Proceed to Select Supplies &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: SUPPLY SELECTOR & TABLE CART VIEW -->
+  <div class="container hidden" id="supplies-selection-section">
+    
+    <!-- Quota Display Bar -->
+    <div class="card quota-summary-card">
+      <div class="quota-summary-header">
+        <h3 data-en="Subsidized Quota Balance for Selected Land (in KG)" data-hi="चयनित भूमि का रियायती कोटा बैलेंस (किग्रा में)">Subsidized Quota Balance for Selected Land (in KG)</h3>
+        <button class="btn btn-secondary btn-sm" id="btn-back-to-land" data-en="&larr; Back to Lands" data-hi="&larr; भूमि पर वापस जाएं">&larr; Back to Lands</button>
+      </div>
+      <div class="quota-grid">
+        <div class="quota-item">
+          <span class="quota-icon">🌱</span>
+          <div class="quota-details">
+            <span class="quota-title" data-en="Seeds Limit" data-hi="बीज कोटा सीमा">Seeds Limit</span>
+            <div class="progress-bar">
+              <div class="progress" id="seeds-progress" style="width: 0%"></div>
+            </div>
+            <span class="quota-status" id="seeds-quota-text">0 / 0 KG Used</span>
+          </div>
+        </div>
+        <div class="quota-item">
+          <span class="quota-icon">🧪</span>
+          <div class="quota-details">
+            <span class="quota-title" data-en="Fertilizer/Soda Limit" data-hi="उर्वरक/सोडा सीमा">Fertilizer/Soda Limit</span>
+            <div class="progress-bar">
+              <div class="progress" id="urea-progress" style="width: 0%"></div>
+            </div>
+            <span class="quota-status" id="urea-quota-text">0 / 0 KG Used</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dual Layout: Left tabs, Right supplies catalog -->
+    <div class="supplies-selector-layout">
+      <div class="tab-panel">
+        <button class="tab-btn active" id="tab-btn-fertilizers" onclick="switchCategoryTab('fertilizers')" data-en="🧪 Fertilizers (Urea, DAP, SSP, Granular)" data-hi="🧪 रासायनिक उर्वरक (यूरिया, डीएपी, एसएसपी)">🧪 Fertilizers (Urea, DAP, SSP, Granular)</button>
+        <button class="tab-btn" id="tab-btn-seeds" onclick="switchCategoryTab('seeds')" data-en="🌱 Seeds (Wheat, Paddy, Maize)" data-hi="🌱 उन्नत बीज (गेहूं, धान, मक्का)">🌱 Seeds (Wheat, Paddy, Maize)</button>
+      </div>
+      <div class="supplies-catalog-area">
+        <div class="catalog-grid" id="catalog-grid">
+          <!-- Populated dynamically based on active tab -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Cart Selected Items Table -->
+    <div class="card table-card" style="margin-top: 24px;">
+      <h3 data-en="Your Booking List" data-hi="आपकी बुकिंग सूची">Your Booking List</h3>
+      <p class="section-desc" data-en="Review materials added to your list, select your preferred dealer society/shop, and click pay at last." data-hi="जोड़ी गई सामग्रियों की जांच करें, स्थानीय वितरण संस्था/दुकान चुनें, और भुगतान करें।">Review materials added to your list, select your preferred dealer society/shop, and click pay at last.</p>
+      
+      <div class="table-responsive">
+        <table class="gov-table cart-table">
+          <thead>
+            <tr>
+              <th width="60px" data-en="S.No" data-hi="क्र.सं.">S.No</th>
+              <th data-en="Material Name" data-hi="सामग्री का नाम">Material Name</th>
+              <th width="260px" data-en="Dealer Option & Stock" data-hi="वितरक एवं उपलब्ध स्टॉक">Dealer Option & Stock</th>
+              <th width="120px" style="text-align: right;" data-en="Rate/Amount" data-hi="दर (रुपये)">Rate/Amount</th>
+              <th width="120px" style="text-align: center;" data-en="Quantity (KG)" data-hi="मात्रा (किग्रा)">Quantity (KG)</th>
+              <th width="80px" style="text-align: center;" data-en="Action" data-hi="हटाएं">Action</th>
+            </tr>
+          </thead>
+          <tbody id="cart-table-body">
+            <!-- Populated dynamically -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cart-total-bar hidden" id="cart-total-bar">
+        <div class="cart-warning-area" id="cart-quota-warning-container">
+          <!-- Warning banner shows here dynamically -->
+        </div>
+        <div class="cart-summary-total">
+          <span data-en="Subsidized Total: " data-hi="कुल रियायती राशि: ">Subsidized Total: </span>
+          <span class="total-price" id="cart-total-price">₹0</span>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+        <button class="btn btn-success" id="btn-proceed-payment" style="font-size: 1.05rem; padding: 12px 24px;" data-en="Proceed to Payment &rarr;" data-hi="भुगतान के लिए आगे बढ़ें &rarr;">Proceed to Payment &rarr;</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ORDER SUCCESS RECEIPT SECTION (NEW SCREEN) -->
+  <div class="container hidden" id="success-receipt-section">
+    <div class="card receipt-card">
+      
+      <!-- SMS Confirmation Alert Badge (NEW FEATURE 3) -->
+      <div id="receipt-sms-alert" class="sms-badge" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 8px; padding: 12px; display: flex; align-items: center; gap: 8px; margin-bottom: 20px; font-size: 0.85rem; color: #34d399; font-weight: 600;">
+        <span>📲</span>
+        <span><span data-en="SMS Alert Sent: Allocation receipt and dynamic pick-up token texted successfully to mobile number " data-hi="एसएमएस अलर्ट भेजा गया: बुकिंग रसीद और पिक-अप टोकन सफलतापूर्वक मोबाइल नंबर पर भेज दिया गया है ">SMS Alert Sent: Allocation receipt and dynamic pick-up token texted successfully to mobile number </span><strong id="receipt-sms-phone">9876543210</strong>.</span>
+      </div>
+
+      <div class="receipt-success-header" style="text-align: center; margin-bottom: 24px;">
+        <span class="success-icon" style="font-size: 3.5rem;">✅</span>
+        <h1 style="color: var(--primary-accent); font-weight: 800; font-size: 2.2rem; margin-top: 10px;" data-en="Booking Successful!" data-hi="बुकिंग सफलतापूर्वक पूर्ण हुई!">Booking Successful!</h1>
+        <p style="color: #9ca3af; font-size: 0.95rem; margin-top: 5px;" data-en="Your subsidized DBT allocation transaction has been confirmed." data-hi="आपका सब्सिडी वाला प्रत्यक्ष लाभ हस्तांतरण (DBT) कोटा सुरक्षित कर लिया गया है।">Your subsidized DBT allocation transaction has been confirmed.</p>
+        <span class="badge" style="margin-top: 12px; background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3); color: #60a5fa;" id="receipt-token-id">TOKEN: EV-482910</span>
+      </div>
+
+      <!-- Farmer details -->
+      <div class="receipt-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px dashed var(--border-color);">
+        <div>
+          <h4 style="color: #9ca3af; font-size: 0.8rem; text-transform: uppercase;" data-en="Farmer Particulars" data-hi="कृषक विवरण">Farmer Particulars</h4>
+          <p style="font-size: 1.1rem; font-weight: 700; margin-top: 4px;" id="receipt-farmer-name">Rajesh Kumar</p>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;" id="receipt-farmer-father">Father: Late Ram Swaroop Kumar</p>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;" id="receipt-farmer-dob">DOB: 15/08/1980</p>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;" id="receipt-farmer-aadhaar">Aadhaar: XXXX-XXXX-9012</p>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;" id="receipt-farmer-phone">Phone: 9876543210</p>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;" id="receipt-farmer-address">Reg. Address: Village Rampur, Bhopal, MP</p>
+        </div>
+        <div>
+          <h4 style="color: #9ca3af; font-size: 0.8rem; text-transform: uppercase;" data-en="Shipping Particulars" data-hi="वितरण पता">Shipping Particulars</h4>
+          <p style="font-size: 1.1rem; font-weight: 700; margin-top: 4px;" id="receipt-delivery-address">Village Rampur, Tehsil Huzur</p>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;" id="receipt-pincode">Pincode: 462001</p>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;" id="receipt-lands">Selected Khasras: 102/1, 105/3</p>
+        </div>
+      </div>
+
+      <!-- Itemized Table list of items -->
+      <div class="table-responsive">
+        <table class="gov-table">
+          <thead>
+            <tr>
+              <th width="60px" data-en="S.No" data-hi="क्र.सं.">S.No</th>
+              <th data-en="Material Name" data-hi="सामग्री का नाम">Material Name</th>
+              <th data-en="Selected Local Dealer" data-hi="चयनित स्थानीय वितरक">Selected Local Dealer</th>
+              <th width="120px" style="text-align: right;" data-en="Rate/Amount" data-hi="दर">Rate/Amount</th>
+              <th width="120px" style="text-align: center;" data-en="Quantity (KG)" data-hi="मात्रा (किग्रा)">Quantity (KG)</th>
+              <th width="150px" style="text-align: right;" data-en="Total Price" data-hi="कुल मूल्य">Total Price</th>
+            </tr>
+          </thead>
+          <tbody id="receipt-items-body">
+            <!-- Rendered dynamically -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="no-print" style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px;">
+        <span style="font-size: 0.85rem; color: #9ca3af;" data-en="Thank you for using E-Vikas Portal. Print receipt for local dealer pick-up." data-hi="ई-विकास पोर्टल का उपयोग करने के लिए धन्यवाद। वितरण संस्था से सामग्री प्राप्त करने हेतु रसीद प्रिंट करें।">Thank you for using E-Vikas Portal. Print receipt for local dealer pick-up.</span>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn btn-primary" id="btn-print-receipt" data-en="Print Receipt" data-hi="रसीद प्रिंट करें">Print Receipt</button>
+          <button class="btn btn-success" id="btn-back-to-lands-receipt" data-en="Done" data-hi="पूर्ण">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOCK PAYMENT GATEWAY MODAL (Multi-Phase) -->
+  <div class="modal-backdrop hidden" id="payment-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="payment-modal-title" data-en="💳 Secure Government DBT Payment Gateway" data-hi="💳 सुरक्षित सरकारी डीबीटी भुगतान गेटवे">💳 Secure Government DBT Payment Gateway</h2>
+        <button class="modal-close" id="btn-close-modal"><span data-en="Close &times;" data-hi="बंद करें &times;">Close &times;</span></button>
+      </div>
+      <div class="modal-body">
+        
+        <!-- Order Summary -->
+        <div class="order-summary-box">
+          <h3 data-en="Booking Summary" data-hi="बुकिंग सारांश">Booking Summary</h3>
+          <div id="modal-cart-items-list" style="margin-top: 8px;">
+            <!-- Dynamically populated cart items list -->
+          </div>
+          <p style="margin-top: 10px; font-size: 0.85rem; color: var(--text-secondary);"><span data-en="Selected Khasras: " data-hi="चयनित खसरा नंबर: ">Selected Khasras: </span><span id="modal-lands">—</span></p>
+          <div class="total-row">
+            <span data-en="Amount to Pay" data-hi="कुल भुगतान राशि">Amount to Pay</span>
+            <span class="total-price" id="modal-total-price">₹0</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label data-en="Select Payment Method" data-hi="भुगतान विधि चुनें">Select Payment Method</label>
+          <select id="payment-method-select" style="background: rgba(0,0,0,0.4); color: white; border: 1px solid var(--border-color); border-radius: 8px; width: 100%; padding: 10px;">
+            <option value="rupay" data-en="🇮🇳 RuPay Card (Subsidized Merchant)" data-hi="🇮🇳 रुपे कार्ड (सब्सिडी मर्चेंट)">🇮🇳 RuPay Card (Subsidized Merchant)</option>
+            <option value="upi" data-en="🇮🇳 UPI App Scan (PhonePe / GPay / BHIM)" data-hi="🇮🇳 यूपीआई स्कैन (PhonePe / GPay / BHIM)">🇮🇳 UPI App Scan (PhonePe / GPay / BHIM)</option>
+            <option value="visa" data-en="Visa Debit Card" data-hi="वीजा डेबिट कार्ड">Visa Debit Card</option>
+            <option value="mastercard" data-en="Mastercard Debit Card" data-hi="मास्टरकार्ड डेबिट कार्ड">Mastercard Debit Card</option>
+          </select>
+        </div>
+
+        <!-- STAGE 1 (UPI MOCK QR): NEW FEATURE 2 -->
+        <div id="payment-upi-view" class="hidden" style="margin-top: 15px;">
+          <div class="upi-qr-wrapper" style="text-align: center; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 15px;">
+            <p style="font-size: 0.85rem; color: #9ca3af; margin-bottom: 12px;" data-en="Scan QR Code using any UPI App (BHIM, PhonePe, GPay, Paytm) to authorize transaction." data-hi="भुगतान अधिकृत करने के लिए किसी भी यूपीआई ऐप (BHIM, PhonePe, GPay, Paytm) से क्यूआर कोड स्कैन करें।">Scan QR Code using any UPI App (BHIM, PhonePe, GPay, Paytm) to authorize transaction.</p>
+            <div style="background: #ffffff; padding: 12px; border-radius: 8px; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.5); margin-bottom: 10px;">
+              <svg width="140" height="140" viewBox="0 0 100 100" style="display: block;">
+                <rect x="0" y="0" width="30" height="30" fill="#000"/>
+                <rect x="5" y="5" width="20" height="20" fill="#fff"/>
+                <rect x="10" y="10" width="10" height="10" fill="#000"/>
+                <rect x="70" y="0" width="30" height="30" fill="#000"/>
+                <rect x="75" y="5" width="20" height="20" fill="#fff"/>
+                <rect x="80" y="10" width="10" height="10" fill="#000"/>
+                <rect x="0" y="70" width="30" height="30" fill="#000"/>
+                <rect x="5" y="75" width="20" height="20" fill="#fff"/>
+                <rect x="10" y="80" width="10" height="10" fill="#000"/>
+                <rect x="40" y="5" width="10" height="10" fill="#000"/>
+                <rect x="55" y="15" width="10" height="20" fill="#000"/>
+                <rect x="35" y="35" width="20" height="10" fill="#000"/>
+                <rect x="15" y="45" width="15" height="15" fill="#000"/>
+                <rect x="70" y="40" width="10" height="25" fill="#000"/>
+                <rect x="45" y="55" width="20" height="20" fill="#000"/>
+                <rect x="80" y="75" width="15" height="15" fill="#000"/>
+                <rect x="50" y="85" width="20" height="10" fill="#000"/>
+                <rect x="35" y="70" width="10" height="10" fill="#000"/>
+              </svg>
+            </div>
+            <div style="font-weight: 700; color: #fff; font-size: 1rem;">BHIM UPI Subsidized Merchant</div>
+            <div style="color: var(--primary-accent); font-size: 0.85rem; font-family: monospace;">dbt-allocations@mpkrishi.gov.in</div>
+          </div>
+          
+          <!-- Mock UPI status simulation banner -->
+          <div class="payment-status-message hidden" id="upi-status-message" style="margin-bottom: 12px;">
+            <span class="spinner"></span>
+            <span id="upi-status-text">Awaiting scan detection from merchant terminal...</span>
+          </div>
+
+          <button class="btn btn-success w-100" id="btn-confirm-upi-pay" data-en="Simulate App QR Scan & Confirm" data-hi="सिम्युलेट क्यूआर स्कैन एवं पुष्टि करें">Simulate App QR Scan & Confirm</button>
+        </div>
+
+        <!-- STAGE 1 (CARD): CARD DETAILS FORM -->
+        <div id="payment-card-details-view">
+          <div class="payment-form">
+            <!-- Delivery fields (Pincode & Address option) -->
+            <div class="form-row">
+              <div class="form-group">
+                <label data-en="Delivery Address / Village" data-hi="वितरण का पता / ग्राम">Delivery Address / Village</label>
+                <input type="text" placeholder="Village name, Block name" id="pay-delivery-address" value="Village: Rampur, Tehsil: Huzur">
+              </div>
+              <div class="form-group">
+                <label data-en="Area Pincode" data-hi="इलाका पिनकोड">Area Pincode</label>
+                <input type="text" placeholder="462001" id="pay-pincode" value="462001">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label data-en="Cardholder Name" data-hi="कार्डधारक का नाम">Cardholder Name</label>
+              <input type="text" placeholder="Farmer Name" id="pay-name" value="Rajesh Kumar">
+            </div>
+            <div class="form-group">
+              <label data-en="Card Number" data-hi="कार्ड नंबर">Card Number</label>
+              <input type="text" placeholder="XXXX XXXX XXXX 4012" id="pay-card-number" value="4532 7182 9301 4012">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label data-en="Expiry Date" data-hi="समाप्ति तिथि">Expiry Date</label>
+                <input type="text" placeholder="MM/YY" id="pay-expiry" value="12/29">
+              </div>
+              <div class="form-group">
+                <label data-en="CVV" data-hi="सीवीवी">CVV</label>
+                <input type="password" placeholder="***" id="pay-cvv" value="123">
+              </div>
+            </div>
+
+            <button class="btn btn-success w-100" id="btn-proceed-card-details" style="margin-top: 10px;" data-en="Request Secure Bank OTP" data-hi="सुरक्षित बैंक ओटीपी अनुरोध करें">Request Secure Bank OTP</button>
+          </div>
+        </div>
+
+        <!-- STAGE 2: 3D-SECURE SECURED OTP VERIFICATION SCREEN -->
+        <div id="payment-otp-verification-view" class="hidden">
+          <div class="secure-bank-banner">
+            <span class="bank-secure-badge" data-en="🛡️ OTP Verification" data-hi="🛡️ ओटीपी सत्यापन">🛡️ OTP Verification</span>
+            <p data-en="One Time Password (OTP) has been sent to the mobile number registered with your bank." data-hi="आपके संबंधित बैंक खाते में पंजीकृत मोबाइल नंबर पर एक बार उपयोग होने वाला पासवर्ड (OTP) भेजा गया है।">One Time Password (OTP) has been sent to the mobile number registered with your bank.</p>
+          </div>
+          
+          <div class="form-group" style="margin-top: 20px;">
+            <label for="payment-otp-input" style="font-weight: 700;" data-en="Enter Transaction OTP" data-hi="लेनदेन ओटीपी दर्ज करें">Enter Transaction OTP</label>
+            <input type="text" id="payment-otp-input" placeholder="Enter 6-digit banking OTP" style="font-size: 1.2rem; text-align: center; letter-spacing: 4px;">
+            <span class="info-note" id="payment-bank-otp-hint" style="color: #34d399; font-weight: 600; display: block; margin-top: 8px;"></span>
+          </div>
+
+          <div class="payment-status-message hidden" id="payment-status-message">
+            <span class="spinner"></span>
+            <span id="payment-status-text">Processing checkout session...</span>
+          </div>
+
+          <div style="display: flex; gap: 10px; margin-top: 15px;">
+            <button class="btn btn-secondary" id="btn-cancel-otp-view" style="flex: 1;" data-en="&larr; Back" data-hi="&larr; वापस">&larr; Back</button>
+            <button class="btn btn-success" id="btn-submit-banking-payment" style="flex: 2;" data-en="Verify & Complete Pay" data-hi="ओटीपी सत्यापित एवं भुगतान करें">Verify & Complete Pay</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING AI CHATBOT MITRA WIDGET (NEW FEATURE) -->
+  <div class="chatbot-wrapper no-print">
+    <!-- Chatbot Floating Bubble Button -->
+    <button id="chatbot-bubble" class="chatbot-bubble">
+      <span>💬</span>
+      <span class="chatbot-bubble-text" data-en="Ask Krishi Mitra" data-hi="कृषि मित्र से पूछें">Ask Krishi Mitra</span>
+    </button>
+
+    <!-- Chatbot Window Panel -->
+    <div id="chatbot-window" class="chatbot-window hidden">
+      <div class="chatbot-header">
+        <div class="chatbot-header-title">
+          <span class="bot-icon">🤖</span>
+          <div>
+            <h4 data-en="Krishi Mitra" data-hi="कृषि मित्र">Krishi Mitra</h4>
+            <p data-en="AI Allocation Assistant" data-hi="एआई आवंटन सहायक">AI Allocation Assistant</p>
+          </div>
+        </div>
+        <button id="btn-close-chatbot" class="close-chat-btn">&times;</button>
+      </div>
+      <div class="chatbot-messages" id="chatbot-messages">
+        <div class="chat-msg bot animate-msg">
+          <p data-en="Hello! I am Krishi Mitra, your agricultural allocation helper. How can I assist you today?" data-hi="नमस्ते! मैं कृषि मित्र हूँ। आज मैं आपकी क्या सहायता कर सकता हूँ?">Hello! I am Krishi Mitra, your agricultural allocation helper. How can I assist you today?</p>
+        </div>
+      </div>
+      <div class="chatbot-input-area">
+        <input type="text" id="chatbot-input" placeholder="Type a message..." data-en="Type a message..." data-hi="संदेश लिखें...">
+        <button id="btn-send-chat" data-en="Send" data-hi="भेजें">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p data-en="© E-Vikas Portal — Directorate of Farmer Welfare and Agricultural Development, Government of MP | All Rights Reserved" data-hi="© ई-विकास पोर्टल — किसान कल्याण एवं कृषि विकास संचालनालय, मध्य प्रदेश सरकार | सर्वाधिकार सुरक्षित">© E-Vikas Portal — Directorate of Farmer Welfare and Agricultural Development, Government of MP | All Rights Reserved</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
