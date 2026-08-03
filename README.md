@@ -1,5 +1,10 @@
 # KrishiSeva — Government Agriculture Booking & Subsidy Portal
 
+[![Vercel Deployment](https://img.shields.io/badge/Vercel-Live%20Demo-brightgreen?logo=vercel)](https://krishi-seva-kappa.vercel.app)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/NishantPatle06/KrishiSeva)
+
+> 🌐 **Live Demo (Vercel)**: [https://krishi-seva-kappa.vercel.app](https://krishi-seva-kappa.vercel.app)
+
 KrishiSeva is a full-stack booking system designed for government distribution of subsidized agricultural supplies (seeds and fertilizers). This project is specifically designed to demonstrate **high-concurrency safety** and **transaction verification** (like payment processing) to placement interviewers.
 
 ---
