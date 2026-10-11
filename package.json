@@ -5,7 +5,17 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "seed": "node scripts/seed.js"
+    "seed": "node scripts/seed.js",
+    "build": "node scripts/build.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "jest --runInBand",
+    "test:unit": "jest tests/unit --runInBand",
+    "test:integration": "jest tests/integration --runInBand",
+    "test:coverage": "jest --coverage --runInBand",
+    "smoke-test": "node scripts/smoke-test.js",
+    "audit:check": "npm audit --audit-level=high",
+    "security:check": "node scripts/verify-secrets.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -13,5 +23,11 @@
     "express": "^4.19.2",
     "mongoose": "^8.3.1",
     "twilio": "^5.13.1"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.5",
+    "jest": "^30.5.2",
+    "mongodb-memory-server": "^10.4.3",
+    "supertest": "^7.3.1"
   }
 }

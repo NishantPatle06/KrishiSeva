@@ -1,9 +1,29 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const bookingController = require('../controllers/bookingController');
 const Farmer = require('../models/Farmer');
 const Supply = require('../models/Supply');
 const Booking = require('../models/Booking');
+
+// Health check endpoint (for deployment smoke test & monitoring)
+router.get('/health', async (req, res) => {
+  try {
+    const isDbConnected = mongoose.connection.readyState === 1;
+    res.status(200).json({
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      service: 'KrishiSeva Agricultural Portal',
+      database: isDbConnected ? 'connected' : 'disconnected'
+    });
+  } catch {
+    res.status(503).json({
+      status: 'degraded',
+      timestamp: new Date().toISOString(),
+      error: 'Health check failed'
+    });
+  }
+});
 
 // Mock OTP Generator
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
@@ -11,8 +31,12 @@ const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString()
 // Route: Send OTP (Mock)
 router.post('/auth/send-otp', async (req, res) => {
   const { phone } = req.body;
+  if (!phone || typeof phone !== 'string' || phone.trim() === '') {
+    return res.status(400).json({ success: false, error: 'Phone number is required.' });
+  }
+
   try {
-    const farmer = await Farmer.findOne({ phone });
+    const farmer = await Farmer.findOne({ phone: phone.trim() });
     if (!farmer) {
       return res.status(404).json({ success: false, error: 'Phone number not registered under any Farmer profile.' });
     }
@@ -41,8 +65,12 @@ router.post('/auth/send-otp', async (req, res) => {
 // Route: Verify OTP
 router.post('/auth/verify-otp', async (req, res) => {
   const { phone, otp } = req.body;
+  if (!phone || !otp) {
+    return res.status(400).json({ success: false, error: 'Phone number and OTP are required.' });
+  }
+
   try {
-    const farmer = await Farmer.findOne({ phone });
+    const farmer = await Farmer.findOne({ phone: phone.trim() });
     if (!farmer) return res.status(404).json({ success: false, error: 'Farmer profile not found.' });
 
     if (!farmer.otp || farmer.otp !== otp || new Date() > farmer.otpExpires) {
@@ -61,6 +89,10 @@ router.post('/auth/verify-otp', async (req, res) => {
 
 // Route: Fetch Farmer Profile Details
 router.get('/farmer/:id', async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ success: false, error: 'Invalid farmer ID format' });
+  }
+
   try {
     const farmer = await Farmer.findById(req.params.id);
     if (!farmer) return res.status(404).json({ success: false, error: 'Farmer not found' });
@@ -83,6 +115,13 @@ router.get('/supplies', async (req, res) => {
 // Route: Calculate Quota Dynamic Status
 router.post('/farmer/:id/quota-status', async (req, res) => {
   const { selectedKhasras, category } = req.body;
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({ success: false, error: 'Invalid farmer ID format' });
+  }
+  if (!selectedKhasras || !Array.isArray(selectedKhasras)) {
+    return res.status(400).json({ success: false, error: 'selectedKhasras array is required' });
+  }
+
   try {
     const farmer = await Farmer.findById(req.params.id);
     if (!farmer) return res.status(404).json({ success: false, error: 'Farmer not found' });

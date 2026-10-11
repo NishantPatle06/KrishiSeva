@@ -20,6 +20,9 @@ app.use(async (req, res, next) => {
 // Serve static frontend files
 app.use(express.static(path.join(__dirname, '../public')));
 
+// Health endpoint redirect
+app.get('/health', (req, res) => res.redirect('/api/health'));
+
 // Routes
 app.use('/api', apiRoutes);
 

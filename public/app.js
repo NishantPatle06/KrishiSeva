@@ -859,7 +859,7 @@ btnPrintReceipt.addEventListener('click', () => {
 // Back to land button on success page
 btnBackToLandsReceipt.addEventListener('click', async () => {
   cart = []; // clear cart
-  logoutFarmer(); // logs out and goes back to Step 1 Auth Home Page
+  window.logoutFarmer(); // logs out and goes back to Step 1 Auth Home Page
 });
 
 function sleep(ms) {

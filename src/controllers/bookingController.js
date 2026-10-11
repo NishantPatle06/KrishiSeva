@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Farmer = require('../models/Farmer');
 const Supply = require('../models/Supply');
 const Booking = require('../models/Booking');
@@ -86,15 +87,24 @@ exports.bookUnsafe = async (req, res) => {
   const { farmerId, items, selectedKhasras, pincode, deliveryAddress } = req.body; // items: [{ supplyId, quantity, selectedDealer }]
 
   try {
+    if (!farmerId || !mongoose.Types.ObjectId.isValid(farmerId)) {
+      return res.status(400).json({ success: false, error: 'Valid farmerId is required' });
+    }
+
     const farmer = await Farmer.findById(farmerId);
     if (!farmer) return res.status(404).json({ success: false, error: 'Farmer not found' });
 
-    if (!selectedKhasras || selectedKhasras.length === 0) {
+    if (!selectedKhasras || !Array.isArray(selectedKhasras) || selectedKhasras.length === 0) {
       return res.status(400).json({ success: false, error: 'Please select at least one land Khasra record' });
     }
 
-    if (!items || items.length === 0) {
+    if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ success: false, error: 'No items in the booking list' });
+    }
+
+    const hasInvalidQty = items.some(i => !i || !i.supplyId || !i.quantity || typeof i.quantity !== 'number' || i.quantity <= 0 || !Number.isInteger(i.quantity));
+    if (hasInvalidQty) {
+      return res.status(400).json({ success: false, error: 'Invalid booking quantity. Quantity must be a positive integer.' });
     }
 
     if (!pincode || !deliveryAddress) {
@@ -105,10 +115,13 @@ exports.bookUnsafe = async (req, res) => {
     const supplyIds = items.map(i => i.supplyId);
     const supplies = await Supply.find({ _id: { $in: supplyIds } });
 
+    if (supplies.length !== new Set(supplyIds.map(String)).size) {
+      return res.status(404).json({ success: false, error: 'One or more items in your cart could not be found.' });
+    }
+
     // Map items with supply details
     const cartItems = items.map(item => {
       const supply = supplies.find(s => s._id.toString() === item.supplyId.toString());
-      if (!supply) throw new Error('One or more items in your cart could not be found.');
       return { ...item, category: supply.category, name: supply.name, marketPrice: supply.marketPrice, subsidizedPrice: supply.subsidizedPrice, currentStock: supply.stock, supplyDoc: supply };
     });
 
@@ -190,6 +203,10 @@ exports.bookUnsafe = async (req, res) => {
 exports.bookSafe = async (req, res) => {
   const { farmerId, items, selectedKhasras, pincode, deliveryAddress } = req.body; // items: [{ supplyId, quantity, selectedDealer }]
 
+  if (!farmerId || !mongoose.Types.ObjectId.isValid(farmerId)) {
+    return res.status(400).json({ success: false, error: 'Valid farmerId is required' });
+  }
+
   // Lock farmer transactions
   while (farmerLocks.has(farmerId)) {
     await sleep(50);
@@ -201,12 +218,17 @@ exports.bookSafe = async (req, res) => {
     const farmer = await Farmer.findById(farmerId);
     if (!farmer) return res.status(404).json({ success: false, error: 'Farmer not found' });
 
-    if (!selectedKhasras || selectedKhasras.length === 0) {
+    if (!selectedKhasras || !Array.isArray(selectedKhasras) || selectedKhasras.length === 0) {
       return res.status(400).json({ success: false, error: 'Please select at least one land Khasra record' });
     }
 
-    if (!items || items.length === 0) {
+    if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ success: false, error: 'No items in the booking list' });
+    }
+
+    const hasInvalidQty = items.some(i => !i || !i.supplyId || !i.quantity || typeof i.quantity !== 'number' || i.quantity <= 0 || !Number.isInteger(i.quantity));
+    if (hasInvalidQty) {
+      return res.status(400).json({ success: false, error: 'Invalid booking quantity. Quantity must be a positive integer.' });
     }
 
     if (!pincode || !deliveryAddress) {
@@ -217,9 +239,12 @@ exports.bookSafe = async (req, res) => {
     const supplyIds = items.map(i => i.supplyId);
     const supplies = await Supply.find({ _id: { $in: supplyIds } });
 
+    if (supplies.length !== new Set(supplyIds.map(String)).size) {
+      return res.status(404).json({ success: false, error: 'One or more items in your cart could not be found.' });
+    }
+
     const cartItems = items.map(item => {
       const supply = supplies.find(s => s._id.toString() === item.supplyId.toString());
-      if (!supply) throw new Error('One or more items in your cart could not be found.');
       return { ...item, category: supply.category, name: supply.name, marketPrice: supply.marketPrice, subsidizedPrice: supply.subsidizedPrice };
     });
 
@@ -312,3 +337,9 @@ exports.bookSafe = async (req, res) => {
     farmerLocks.delete(farmerId); // Release lock
   }
 };
+
+// Export helper functions for modular testing
+exports.calculateQuotaStatus = calculateQuotaStatus;
+exports.QUOTA_PER_ACRE = QUOTA_PER_ACRE;
+exports.sendSmsNotification = sendSmsNotification;
+

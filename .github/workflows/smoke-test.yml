@@ -1,0 +1,55 @@
+name: Deployment Smoke Test
+
+on:
+  deployment_status:
+  workflow_dispatch:
+    inputs:
+      target_url:
+        description: 'Target Application URL to validate'
+        required: false
+        default: 'https://krishi-seva-kappa.vercel.app'
+        type: string
+
+jobs:
+  smoke-test:
+    name: Run Smoke Test on Deployed Application
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Run if triggered via manual dispatch OR when a deployment status succeeds
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success')
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20 LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Resolve Deployment URL
+        id: resolve-url
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TARGET="${{ inputs.target_url }}"
+          elif [ "${{ github.event_name }}" = "deployment_status" ]; then
+            TARGET="${{ github.event.deployment_status.target_url || github.event.deployment_status.environment_url }}"
+          fi
+          
+          if [ -z "$TARGET" ]; then
+            TARGET="https://krishi-seva-kappa.vercel.app"
+          fi
+          
+          echo "Resolved Target URL: $TARGET"
+          echo "target_url=$TARGET" >> "$GITHUB_OUTPUT"
+
+      - name: Execute Smoke Tests
+        env:
+          APP_URL: ${{ steps.resolve-url.outputs.target_url }}
+          SMOKE_MAX_ATTEMPTS: 6
+          SMOKE_TIMEOUT_MS: 15000
+          SMOKE_RETRY_DELAY_MS: 5000
+        run: npm run smoke-test

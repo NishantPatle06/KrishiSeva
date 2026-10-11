@@ -1,0 +1,123 @@
+name: KrishiSeva CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+      - 'fix/**'
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  code-quality-and-security:
+    name: Code Quality & Security Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20 LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies reproducibly
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Verify Secret & Credential Safety
+        run: npm run security:check
+
+      - name: Run Dependency Vulnerability Audit
+        run: npm run audit:check
+
+  test-backend:
+    name: Backend Test Suite (${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [18, 20]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies reproducibly
+        run: npm ci
+
+      - name: Run Unit Tests (Quota & Business Logic)
+        run: npm run test:unit
+
+      - name: Run Integration & Concurrency Tests (In-Memory MongoDB)
+        run: npm run test:integration
+
+      - name: Generate Code Coverage (Node 20 only)
+        if: matrix.node-version == 20
+        run: npm run test:coverage
+
+      - name: Upload Coverage Artifact
+        if: matrix.node-version == 20
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: coverage/
+          retention-days: 7
+
+  build-frontend:
+    name: Frontend Production Build & Asset Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20 LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies reproducibly
+        run: npm ci
+
+      - name: Validate Frontend Assets & Production Build
+        run: npm run build
+
+  ci-status-check:
+    name: CI Gate / All Checks Passed
+    runs-on: ubuntu-latest
+    needs: [code-quality-and-security, test-backend, build-frontend]
+    if: always()
+    steps:
+      - name: Evaluate Pipeline Status
+        run: |
+          if [ "${{ needs.code-quality-and-security.result }}" != "success" ]; then
+            echo "::error::Code quality and security job failed"
+            exit 1
+          fi
+          if [ "${{ needs.test-backend.result }}" != "success" ]; then
+            echo "::error::Backend tests job failed"
+            exit 1
+          fi
+          if [ "${{ needs.build-frontend.result }}" != "success" ]; then
+            echo "::error::Frontend build job failed"
+            exit 1
+          fi
+          echo "All CI pipeline checks passed successfully!"

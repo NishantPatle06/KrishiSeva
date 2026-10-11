@@ -1,0 +1,81 @@
+name: Continuous Deployment & Smoke Verification
+
+on:
+  workflow_run:
+    workflows: ["KrishiSeva CI Pipeline"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - preview
+
+jobs:
+  deploy-and-verify:
+    name: Production Deployment & Smoke Verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Only run if CI workflow succeeded (or on manual dispatch)
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main') }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20 LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check Deployment Mode
+        id: check-mode
+        run: |
+          if [ -n "${{ secrets.VERCEL_TOKEN }}" ]; then
+            echo "mode=actions-vercel" >> "$GITHUB_OUTPUT"
+            echo "Vercel credentials detected. Deploying via Vercel CLI..."
+          else
+            echo "mode=vercel-native" >> "$GITHUB_OUTPUT"
+            echo "VERCEL_TOKEN secret not set. Relying on Vercel Native GitHub integration."
+          fi
+
+      - name: Deploy to Vercel via CLI
+        if: steps.check-mode.outputs.mode == 'actions-vercel'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          npx vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+          npx vercel build --prod --token=$VERCEL_TOKEN
+          PROD_URL=$(npx vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN)
+          echo "Deployed production URL: $PROD_URL"
+          echo "DEPLOYED_URL=$PROD_URL" >> $GITHUB_ENV
+
+      - name: Post-Deployment Smoke Test (Actions Deployment)
+        if: steps.check-mode.outputs.mode == 'actions-vercel'
+        env:
+          APP_URL: ${{ env.DEPLOYED_URL }}
+          SMOKE_MAX_ATTEMPTS: 6
+          SMOKE_TIMEOUT_MS: 15000
+          SMOKE_RETRY_DELAY_MS: 5000
+        run: npm run smoke-test
+
+      - name: Post-Deployment Smoke Test (Vercel Native Deployment)
+        if: steps.check-mode.outputs.mode == 'vercel-native'
+        env:
+          APP_URL: https://krishi-seva-kappa.vercel.app
+          SMOKE_MAX_ATTEMPTS: 6
+          SMOKE_TIMEOUT_MS: 15000
+          SMOKE_RETRY_DELAY_MS: 5000
+        run: |
+          echo "Validating production deployment at https://krishi-seva-kappa.vercel.app..."
+          npm run smoke-test
